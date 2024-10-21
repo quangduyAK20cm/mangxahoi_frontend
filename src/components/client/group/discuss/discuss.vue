@@ -7,8 +7,8 @@
                         <img style="width: 15%;"
                             src="https://www.facebook.com/images/comet/empty_states_icons/permissions/permissions_gray_wash.svg"
                             alt="">
-                        <h4><b>This is a private group</b></h4>
-                        <p>Please join this group to watch or discuss</p>
+                        <h4><b>Đây là một nhóm riêng tư</b></h4>
+                        <p>Hãy tham gia nhóm này để xem hoặc thảo luận</p>
                     </div>
 
                 </div>
@@ -20,7 +20,7 @@
                             </div>
                             <form class="post-text ms-3 w-100 btn-temp" data-bs-toggle="modal"
                                 data-bs-target="#post-modal" action="javascript:void();" style="flex:1">
-                                <input type="text" class="form-control rounded" placeholder="What are you thinking ?"
+                                <input type="text" class="form-control rounded" placeholder="bạn đang nghĩ gì vậy ?"
                                     style="border:none;">
                             </form>
                         </div>
@@ -29,7 +29,7 @@
                             <div class="modal-dialog   modal-fullscreen-sm-down modal-dialog-centered modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="post-modalLabel">Create Post</h5>
+                                        <h5 class="modal-title" id="post-modalLabel">Tạo bài viết</h5>
                                         <button ref="btnCloseModal" type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal"><i class="ri-close-fill"></i></button>
                                     </div>
@@ -45,12 +45,12 @@
                                             <form class="post-text ms-3 w-100" action="javascript:void(); "
                                                 style="flex:1">
                                                 <input v-model="post.caption" type="text" class="form-control rounded"
-                                                    placeholder="Write something here..." style="border:none;">
+                                                    placeholder="Viết suy nghĩ của bạn ở đây..." style="border:none;">
                                             </form>
                                         </div>
                                         <input @change="getImage" id="input-b3" name="input-b3[]" type="file"
                                             class="file" multiple data-show-upload="false" data-show-caption="true"
-                                            data-msg-placeholder="Select {files} for upload..." accept="image/*">
+                                            data-msg-placeholder="Select {files} for upload..." accept="image/*,video/*">
                                         <!-- ****************************************************************** -->
                                         <hr>
                                         <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0 ">
@@ -59,7 +59,7 @@
                                                     class="bg-soft-primary rounded p-2 pointer me-3">
                                                     <a></a><img src="../../../../assets/client/images/small/07.png"
                                                         alt="icon" class="img-fluid">
-                                                    Photo/Video
+                                                    Ảnh/Video
                                                 </div>
                                             </li>
                                             <li class="col-md-6 my-2">
@@ -68,7 +68,7 @@
                                                         src="../../../../assets/client/images/small/08.png" alt="icon"
                                                         class="img-fluid">
                                                     Tag
-                                                    Friend
+                                                    Bạn bè
                                                 </div>
                                             </li>
                                         </ul>
@@ -88,7 +88,7 @@
                                                 </div>
                                                 <div class="form-check form-switch">
                                                     <label class="form-check-label f-500" for="flexSwitchCheckChecked">
-                                                        Post anonymously</label>
+                                                        Đăng ẩn danh</label>
                                                     <input class="form-check-input" type="checkbox"
                                                         id="flexSwitchCheckChecked" checked="false" v-model="privacy">
                                                 </div>
@@ -96,7 +96,7 @@
                                         </div>
                                         <div v-else></div>
                                         <button @click="posting()" class="btn btn-primary d-block w-100 mt-3">
-                                            Post
+                                            Đăng
                                         </button>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
                             </li>
                             <li class="mb-md-0"><a style="cursor: pointer;" class="">
                                     <img src="/src/assets/client/images/small/08.png" alt="icon" class="img-fluid"> Tag
-                                    Friend </a>
+                                    bạn bè </a>
                             </li>
                         </ul>
                     </div>
@@ -124,7 +124,7 @@
             <div class=" col-5" style="height: fit-content; position: sticky; top: 6rem;">
                 <div class="card " style="border-radius: 10px;">
                     <div class="card-body b " style="border-radius: 10px; box-shadow: 0px 0px 5px #33333324;">
-                        <span style="font-weight: 600;">Introduct</span>
+                        <span style="font-weight: 600;">Giới thiệu</span>
                         <div v-if="info.privacy == 1" class="w-100 d-flex mb-2 privacy-hover ps-2 align-items-center"
                             style="height: 65px; line-height: 18px;">
                             <div class="d-flex me-2 justify-content-center align-items-center"
@@ -134,8 +134,8 @@
                             <div class="d-flex justify-content-between align-items-center"
                                 style="width:calc(100% - 60px);">
                                 <div class="d-flex flex-column pt-3 a" style="user-select:none;">
-                                    <h5><b style="font-weight:500;">Public</b></h5>
-                                    <p>Anyone can see everyone in the group and what they post</p>
+                                    <h5><b style="font-weight:500;">Công cộng</b></h5>
+                                    <p>Bất kỳ ai cũng có thể nhìn thấy mọi người trong nhóm và những gì họ đăng</p>
                                 </div>
                             </div>
                         </div>
@@ -148,8 +148,8 @@
                             <div class="d-flex justify-content-between align-items-center"
                                 style="width:calc(100% - 60px);">
                                 <div class="d-flex flex-column pt-3 a" style="user-select:none;">
-                                    <h5><b style="font-weight:500;">Private</b></h5>
-                                    <p>only members can see everyone in the group and what they post</p>
+                                    <h5><b style="font-weight:500;">Riêng tư</b></h5>
+                                    <p>chỉ thành viên mới có thể nhìn thấy mọi người trong nhóm và những gì họ đăng</p>
                                 </div>
                             </div>
                         </div>
@@ -162,8 +162,8 @@
                             <div class="d-flex justify-content-between align-items-center"
                                 style="width:calc(100% - 60px);">
                                 <div class="d-flex flex-column pt-3 a" style="user-select:none;">
-                                    <h5><b style="font-weight:500;">Visible</b></h5>
-                                    <p>Anyone can see this group</p>
+                                    <h5><b style="font-weight:500;">Dễ thấy</b></h5>
+                                    <p>Bất cứ ai cũng có thể nhìn thấy nhóm này</p>
                                 </div>
                             </div>
                         </div>

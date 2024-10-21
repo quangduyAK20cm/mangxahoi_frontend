@@ -12,7 +12,13 @@
                             style="z-index: 1; position: absolute;top:3px;right: 12px; font-size: 23px;">
                             <i class="fa-solid fa-clone" style="text-shadow: 0 0 10px #000000;"></i>
                         </span>
-                        <img style="object-fit: cover; width: 100%;height: 100%;" :src="urlImg + v.photos[0]">
+                        <!-- <img style="object-fit: cover; width: 100%;height: 100%;" :src="urlImg + v.photos[0]"> -->
+                        <img v-if="isImage(v.photos[0])" style="object-fit: cover; width: 100%; height: 100%;" :src="urlImg + v.photos[0]" alt="">
+    
+                        <video v-else style="object-fit: cover; width: 100%; height: 100%;" controls>
+                          <source :src="urlImg + v.photos[0]" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
             </div>
@@ -60,6 +66,11 @@ export default {
         this.loadListPhotos()
     },
     methods: {
+        isImage(fileName) {
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+      const extension = fileName.split('.').pop().toLowerCase(); // Lấy phần mở rộng của file
+      return imageExtensions.includes(extension);
+    },
         loadListPhotos() {
             axios
                 .get(this.$route.params.username + '/data-photos')

@@ -56,7 +56,7 @@
                   </div>
                   <form class="post-text ms-3 w-100 btn-temp" data-bs-toggle="modal" data-bs-target="#post-modal"
                     action="javascript:void();" style="flex:1">
-                    <input type="text" class="form-control rounded" placeholder="Write something here..."
+                    <input type="text" class="form-control rounded" :placeholder="`${myInfo.username} ơi, bạn đang nghĩ gì thế?`"
                       style="border:none;">
                   </form>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="modal-dialog   modal-fullscreen-sm-down">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="post-modalLabel">Create Post</h5>
+                      <h5 class="modal-title" id="post-modalLabel">Tạo bài viết</h5>
                       <button ref="btnCloseModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i
                           class="ri-close-fill"></i></button>
                     </div>
@@ -93,13 +93,13 @@
                         </div>
                         <form class="post-text ms-3 w-100" action="javascript:void(); " style="flex:1">
                           <textarea cols="10" rows="1" v-model="post.caption" class="form-control rounded"
-                            placeholder="Write something here..." style="border:none;">
+                            placeholder="Viết suy nghĩ của bạn ở đây..." style="border:none;">
                           </textarea>
                         </form>
                       </div>
                       <input @change="getImage" id="input-b3" name="input-b3[]" type="file" class="file" multiple
                         data-show-upload="false" data-show-caption="true"
-                        data-msg-placeholder="Select {files} for upload..." accept="image/*">
+                        data-msg-placeholder="Select {files} for upload..." accept="image/*,video/*">
                       <!-- ****************************************************************** -->
                       <hr>
                       <ul class="d-flex flex-wrap align-items-center list-inline m-0 p-0">
@@ -129,13 +129,13 @@
                               <img :src="urlImg + myInfo.avatar" alt="userimg"
                                 style="width: 100%; height: 100%; object-fit: cover; ">
                             </div>
-                            <h6>Your Story</h6>
+                            <h6>{{myInfo.username}}</h6>
                           </div>
                           <div class="card-post-toolbar">
                             <div class="dropdown">
                               <span class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false" role="button">
-                                <span class="btn btn-primary">Privacy</span>
+                                <span class="btn btn-primary">Quyền riêng tư</span>
                               </span>
                               <div class="dropdown-menu m-0 p-0 dropdownn">
                                 <a @click="setPrivacyIndex(1)" id="privacy-1" class="dropdown-item px-3 py-1" href="#">

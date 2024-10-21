@@ -44,7 +44,7 @@
                         <button v-else-if="v.status_button == 1" class="btn  btn-light w-100 f-500 py-0 my-0" disabled>
                             <img src="../../../../assets/client/images/page-img/page-load-loader.gif" alt="loader"
                                 style="height: 37px;">Tham gia nhóm</button>
-                        <button v-else class="btn btn-primary w-100 f-500">Access the group</button>
+                        <button v-else class="btn btn-primary w-100 f-500">Truy cập nhóm</button>
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@
                                 disabled>
                                 <img src="../../../../assets/client/images/page-img/page-load-loader.gif" alt="loader"
                                     style="height: 37px;">Tham gia nhóm</button>
-                            <button v-else class="btn btn-primary w-100 f-500">Access the group</button>
+                            <button v-else class="btn btn-primary w-100 f-500">Truy cập nhóm</button>
                         </div>
                     </div>
                 </template>

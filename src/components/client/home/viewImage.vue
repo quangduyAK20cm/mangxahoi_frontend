@@ -6,9 +6,24 @@
             class="aaasass"
             @click="openModal(index)"
             :class="{ singleImg: arrayImages.length < 3 }">
-            <div class="carousel__item" @mouseup="fixTranslate">
+            <!-- <div class="carousel__item" @mouseup="fixTranslate">
                 <img :src="urlImg + image" />
+            </div> -->
+            <div class="carousel__item" @mouseup="fixTranslate">
+                <template v-if="isImage(image)">
+                    <img :src="urlImg + image" />
+                </template>
+                <template v-else>
+                    <video style="
+    width: 100%;
+    color: #333;
+    border-radius: 10px;
+    outline: 1px solid #7d7d7d63;" :src="urlImg + image" controls>
+                        Your browser does not support the video tag.
+                    </video>
+                </template>
             </div>
+            
         </Slide>
         <template #addons v-if="arrayImages.length >= 3">
             <Navigation />
@@ -58,6 +73,11 @@ export default {
         this.singleImage();
     },
     methods: {
+        isImage(fileName) {
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+      const extension = fileName.split('.').pop().toLowerCase(); // Lấy phần mở rộng của file
+      return imageExtensions.includes(extension);
+    },
         openModal(i) {
             var object = {
                 index: i,

@@ -1,20 +1,19 @@
 <template>
-    <div v-if="!calling">
-        <h2>1. Start your Webcam</h2>
-        <div class="videos">
+    <div>
+        <div :class="{'bg_overlay':calling}"></div>
+        <div class="videos" :class="{'calling':calling}">
             <span>
-                <video ref="webcamVideo" autoplay playsinline></video>
+                <video class="webcamVideo" ref="webcamVideo" autoplay playsinline></video>
             </span>
-            <span>
-                <h3>Friend</h3>
-                <video ref="remoteVideo" autoplay playsinline></video>
+            <span class="answer_call" style="text-align: end; margin-right: 10px;">
+                <video :class="{'answer': !calling}" class="remoteVideo" ref="remoteVideo" autoplay playsinline></video>
             </span>
         </div>
-        <button @click="hangupCall">Kết thúc</button>
+        <button class="hangup_call" @click="hangupCall">Kết thúc</button>
     </div>
-    <div v-else>
+    <!-- <div v-else>
         <div>Đang gọi</div>
-    </div>
+    </div> -->
 </template>
 
 <script>
@@ -42,24 +41,37 @@ export default {
 
     async mounted() {
         await this.startWebcam();
+        // this.getMyInfo();
         this.callId ? await this.answerCall() : await this.createCall();
     },
 
     created() {
-        this.getMyInfo();
+        this.getMyInfoFromLocalStorage();
         this.userId = this.$route.query.userId || null;
         this.callId = this.$route.query.callId || null;
     },
 
     methods: {
-        async getMyInfo() {
-            try {
-                const res = await axios.get('profile/data');
-                this.myInfo = res.data.myInfo;
-            } catch (error) {
-                console.error("Error fetching myInfo:", error);
+        getMyInfoFromLocalStorage() {
+            const profileData = localStorage.getItem('information-my-profile');
+            if (profileData) {
+                try {
+                    this.myInfo = JSON.parse(profileData);  // Parse và gán giá trị cho myInfo
+                } catch (error) {
+                    console.error("Error parsing profile data from localStorage:", error);
+                }
+            } else {
+                console.error("No profile data found in localStorage.");
             }
         },
+        // async getMyInfo() {
+        //     try {
+        //         const res = await axios.get('profile/data');
+        //         this.myInfo = res.data.myInfo;
+        //     } catch (error) {
+        //         console.error("Error fetching myInfo:", error);
+        //     }
+        // },
 
         async startWebcam() {
             try {
@@ -71,7 +83,7 @@ export default {
                 this.$refs.webcamVideo.srcObject = this.localStream;
                 this.$refs.remoteVideo.srcObject = this.remoteStream;
             } catch (error) {
-                console.error('Error starting webcam: ', error);
+                console.error('Error starting webcam: ', error.message);
             }
         },
 
@@ -96,6 +108,11 @@ export default {
 
         async createCall() {
             try {
+                this.userId = this.$route.query.userId || null;
+                if (!this.userId) {
+                    console.error("Missing userId");
+                    return;
+                }
                 const callDocRef = doc(collection(firestore, 'calls'));
                 const offerCandidatesRef = collection(callDocRef, 'offerCandidates');
                 const answerCandidatesRef = collection(callDocRef, 'answerCandidates');
@@ -134,7 +151,10 @@ export default {
                     timestamp: new Date(),
                 });
             } else {
-                console.error('userId or callerName is missing');
+                console.error('userId or callerName is missing', {
+                    userId: this.userId,
+                    callerName: this.myInfo?.nickname
+                });
             }
         },
 
@@ -142,6 +162,7 @@ export default {
             onSnapshot(callDocRef, (snapshot) => {
                 const data = snapshot.data();
                 if (data?.answer && !this.pc.currentRemoteDescription) {
+                    this.calling = false
                     const answerDescription = new RTCSessionDescription(data.answer);
                     this.pc.setRemoteDescription(answerDescription);
                 }
@@ -175,7 +196,7 @@ export default {
                     await setDoc(callDocRef, { answer, callStatus: 'in-a-call', createdAt: new Date() });
 
                 }
-
+                this.calling = false
                 this.subscribeToCandidates(offerCandidatesRef);
                 this.listenForAnswer(callDocRef);
             } catch (error) {
@@ -197,6 +218,7 @@ export default {
             } catch (error) {
                 console.error('Error updating call status: ', error);
             }
+            this.calling = true
             window.close();
         }
     },
@@ -213,6 +235,19 @@ export default {
 </script>
 
 <style scoped>
+.bg_overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Làm tối nền, có thể chỉnh độ mờ */
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center;     /* Căn giữa theo chiều dọc */
+    z-index: 2; /* Đảm bảo overlay hiển thị trên tất cả các thành phần khác */
+
+}
 .videos {
     display: flex;
     justify-content: space-around;
@@ -220,5 +255,39 @@ export default {
 
 video {
     width: 45%;
+}
+.remoteVideo.answer{
+    border: 1px solid #fff;
+}
+.answer_call{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+z-index: 4;
+}
+.webcamVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover; /* Giữ tỷ lệ khung hình mà không bị biến dạng */
+    z-index: 1; /* Đảm bảo video nằm trên cùng */
+}
+.hangup_call {
+    text-align: center;
+    display: block;
+    width: 100px;
+    margin: auto;
+    border: none;
+    background: red;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    font-weight: 600;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
 }
 </style>

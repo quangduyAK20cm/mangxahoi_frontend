@@ -9,7 +9,7 @@
                         <i class="fa-solid fa-xmark text-white" style="font-size: 25px;"></i>
                     </div>
                 </div>
-                <div class="d-flex bg-white" style="height: 90vh;width: 100%; ">
+                <div class="d-flex bg-white" style="height: 90vh;width: 100%; border-radius:10px;">
                     <div v-if="arrayImages.length > 0"
                         style="height: 100%; overflow: hidden;aspect-ratio: 1/1; cursor: pointer; position: relative; ">
                         <div @click="indexImage--" v-if="indexImage != 0"
@@ -19,15 +19,25 @@
                         </div>
                         <div @click="indexImage++" v-if="indexImage != arrayImages.length - 1"
                             class="bg-hover circle flex-center text-dark bg-hover me-2 "
-                            style="position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 2rem; height: 2rem; background-color: #ddddddad;">
+                            style="position: absolute; right: 0; z-index:1000; top: 50%; transform: translateY(-50%); width: 2rem; height: 2rem; background-color: #ddddddad;">
                             <i class="fas fa-chevron-right text-center" style="font-size: 20px;" />
                         </div>
                         <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);">
                             <i v-for="i in arrayImages.length" :class="{ 'text-white': i - 1 == indexImage }"
                                 class="fas fa-circle  me-1" style="font-size: 0.4rem; color: #ffffff48;"></i>
                         </div>
-                        <img style="object-fit: cover; width: 100%;height: 100%; cursor: auto;"
-                            :src="urlImg + arrayImages[indexImage]" alt="">
+                        <!-- <img style="object-fit: cover; width: 100%;height: 100%; cursor: auto;"
+                            :src="urlImg + arrayImages[indexImage]" alt=""> -->
+                            <img v-if="isImage(arrayImages[indexImage])"
+         style="object-fit: contain; width: 100%; height: 100%; cursor: auto;"
+         :src="urlImg + arrayImages[indexImage]" alt="">
+    
+    <video v-else
+           style="object-fit: contain; width: 100%; height: 100%; cursor: auto;"
+           controls>
+      <source :src="urlImg + arrayImages[indexImage]" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
                     </div>
                     <div class="d-flex flex-column" style="flex:1; position: relative;">
                         <div class=" d-flex py-2 px-2 w-100">
@@ -283,6 +293,11 @@ export default {
         this.convertStringImageToArray(this.post.images)
     },
     methods: {
+        isImage(fileName) {
+      const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
+      const extension = fileName.split('.').pop().toLowerCase(); // Lấy phần mở rộng của file
+      return imageExtensions.includes(extension);
+    },
         moreReply(v, k) {
             this.list_comment[k].limit += 3
             if (this.list_comment[k].replies > 3) {
